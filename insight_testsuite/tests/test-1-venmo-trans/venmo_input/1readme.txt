@@ -1,0 +1,1 @@
+First, basic test with single transaction provided by Insight
