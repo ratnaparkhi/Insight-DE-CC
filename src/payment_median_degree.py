@@ -1,5 +1,18 @@
 #!/c/Python34/python
-
+# Date: July 15, 2016
+# Author: Prashant Ratnaparkhi
+# Summary: This file contains the source code for the solution for
+# Insight DE coding challenge. The rolling median of payments
+# transactions within a 60 seconds moving windos is calculate and
+# stored in a file.
+# This implementation uses Graph class from networks package. 
+# Usage: payment_median_degree.py -i <inputFile> -o <outputFile>
+# For more information regarding the solution, please refer to the URL below
+# https://github.com/ratnaparkhi/Insight-DE-CC.git
+# For more information regarding the challegnge,
+# please refer to the URL below
+# https://github.com/InsightDataScience/coding-challenge
+#
 import sys
 import getopt
 import json
@@ -7,8 +20,7 @@ import networkx as graph
 import statistics
 import time
 from calendar import timegm
-
-
+#
 def main(argv):
    inFile = ''
    outFile = ''
@@ -47,6 +59,14 @@ def main(argv):
          payment_actor = payment_data['actor']
          payment_target = payment_data['target']
          payment_timestamp = payment_data['created_time']
+         # It is assumed that format of the fields is correct.
+         # Check if actor and target are the same, which indicates
+         # invalid transaction. In such case, write 'INVALID_TXN'
+         # and continue to process the next payment.
+         if payment_actor == payment_target:
+            medianOutput.write(str('INVALID-TXN\n'))
+            continue
+
          # convert payment_timestamp to epoch_time
          utcTimestamp = time.strptime(payment_timestamp, "%Y-%m-%dT%H:%M:%SZ")
          txnEpochTime = timegm(utcTimestamp)
